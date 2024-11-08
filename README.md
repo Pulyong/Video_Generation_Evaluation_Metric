@@ -1,0 +1,2 @@
+# Video_Generation_Evaluation_Metric
+Minimum Implementation for Video Generation Evaluation
