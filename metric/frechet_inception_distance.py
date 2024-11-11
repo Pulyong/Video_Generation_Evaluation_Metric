@@ -19,7 +19,7 @@ Based on https://github.com/universome/stylegan-v/blob/master/src/metrics/freche
 class FID_Dataset(Dataset):
     def __init__(self, file_path, processor, frame = 16):
         self.file_path = file_path
-        self.transform = processor
+        self.processor = processor
         self.frame = frame
 
     def __len__(self):
@@ -39,7 +39,7 @@ class FID_Dataset(Dataset):
         video_16 = video[start:end]
 
         #transformed_frames = [self.transform(images=frame, return_tensors="pt")['pixel_values'] for frame in video_16]
-        video_16 = self.transform(images=video_16, return_tensors="pt")['pixel_values'] # T,C,H,W
+        video_16 = self.processor(images=video_16, return_tensors="pt")['pixel_values'] # T,C,H,W
 
         #video_16 = video_16.permute((3,0,1,2)) ## 여기 고쳐
         ret['video'] = video_16
@@ -161,15 +161,12 @@ def FID(gen_video_path = None, real_video_path = None ,model_save_path = None, f
     real_stats = FeatureStats()
     real_dataset = FID_Dataset(real_video_path,processor,frame)
     real_dataloader = DataLoader(real_dataset,batch_size=64,num_workers=4,shuffle=False) 
-    print(len(gen_dataset))
-    print(len(real_dataset))
-    print(len(gen_dataloader))
-    print(len(real_dataloader))
-    #gen_stats = inference(model=model, dataloader=gen_dataloader, feature_stats = gen_stats, device = device)
-    #real_stats = inference(model=model, dataloader=real_dataloader, feature_stats = real_stats, device = device)
 
-    #score = compute_fid(gen_stats, real_stats)
-    #print(f"Frechet Inception Distance estimated by {model_name}: {score}")
+    gen_stats = inference(model=model, dataloader=gen_dataloader, feature_stats = gen_stats, device = device)
+    real_stats = inference(model=model, dataloader=real_dataloader, feature_stats = real_stats, device = device)
+
+    score = compute_fid(gen_stats, real_stats)
+    print(f"Frechet Inception Distance estimated by {model_name}: {score}")
     
 
 if __name__ =='__main__':
