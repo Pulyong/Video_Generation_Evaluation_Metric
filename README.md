@@ -1,10 +1,10 @@
 # Video_Generation_Evaluation_Metric
-Today, research on video generative models is actively progressing.  
+Today, Research on video generative models is actively progressing.  
 Nevertheless, Evaluation Metrics are hidden here and there and are not unified.  
   
 So this repo aims to Minimum Implementation for Video Generation Evaluation  
 ### I implemented a widely used metric for Video Generation. 
-- Inception Score
+- Inception Score  
 - Frechet Inception Distance
 - Frechet Video Distance
 - Clip Similarity
